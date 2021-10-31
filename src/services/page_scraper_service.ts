@@ -1,8 +1,8 @@
 import { EventFullScrapedDto } from "../data/event";
-const puppeteer = require('puppeteer');
+import { launch } from "puppeteer";
 
 export async function scrapeEvent(url: string): Promise<EventFullScrapedDto | null> {
-    const browser = await puppeteer.launch({
+    const browser = await launch({
         headless: false,
         args: ["--disable-setuid-sandbox"],
         'ignoreHTTPSErrors': true
@@ -37,7 +37,7 @@ export async function scrapeEvent(url: string): Promise<EventFullScrapedDto | nu
             console.log(`error while scraping event at ${url} :
                 ${e} // todo check formatting
                 `);
-            return null;
+            return null; //todo maybe not return anything
         } finally {
             await browser.close()
         }

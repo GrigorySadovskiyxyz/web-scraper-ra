@@ -1,10 +1,8 @@
-import { Browser, PuppeteerNode } from "puppeteer";
-
-const puppeteer: PuppeteerNode = require('puppeteer');
-const moment = require('moment');
+import { Browser, launch } from "puppeteer";
+import moment from 'moment';
 
 export async function getUpcomingEventsUrls(): Promise<Array<string>> {
-  const browser: Browser = await puppeteer.launch({
+  const browser: Browser = await launch({
     headless: false,
     args: ["--disable-setuid-sandbox"],
     'ignoreHTTPSErrors': true
@@ -25,6 +23,7 @@ export async function getUpcomingEventsUrls(): Promise<Array<string>> {
       toContinueLoop = false;
     }
   }
+  
   // Todo: Update database with events
   await browser.close();
   return upcomingEventsWhole;
@@ -36,7 +35,7 @@ async function extractEventsUrlsFromPage(browser: Browser, pageUrl: string): Pro
   await page.goto(pageUrl, { waitUntil: 'domcontentloaded' });
   let arrayLinks: Array<string> = [];
   await page.evaluate(() => {
-    let htmlElements = Array.from(document.querySelectorAll("h3[class~='Box-omzyfs-0'] > a"));
+    let htmlElements = Array.from(document.querySelectorAll("h3[class~='Box-omzyfs-0'] > a")); // todo crashes here
     let links = htmlElements.map(item => item.getAttribute('href'));
     return links
       .filter(notEmpty)

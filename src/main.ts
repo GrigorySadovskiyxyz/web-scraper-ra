@@ -8,7 +8,7 @@ const port = 3000;
 app.get('/', async (req, res) => {
     // let eventsResult: Array<string>;
     let eventUrls: Array<string> = await getUpcomingEventsUrls();
-    let eventsResult = await eventUrls
+    let eventsResult = await eventUrls // todo i dont know why await has no effect here
         .map(async eventUrlString => {
             let eventScraped = await scrapeEvent(eventUrlString);
             console.log(eventScraped?.toJson());
